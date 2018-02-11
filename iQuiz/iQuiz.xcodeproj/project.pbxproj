@@ -12,6 +12,7 @@
 		D6A2BC0C202CBBAD00C5E791 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6A2BC0A202CBBAD00C5E791 /* Main.storyboard */; };
 		D6A2BC0E202CBBAD00C5E791 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6A2BC0D202CBBAD00C5E791 /* Assets.xcassets */; };
 		D6A2BC11202CBBAD00C5E791 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6A2BC0F202CBBAD00C5E791 /* LaunchScreen.storyboard */; };
+		D6A2BC19202CD5A300C5E791 /* SubjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A2BC18202CD5A300C5E791 /* SubjectTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		D6A2BC0D202CBBAD00C5E791 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D6A2BC10202CBBAD00C5E791 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D6A2BC12202CBBAD00C5E791 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D6A2BC18202CD5A300C5E791 /* SubjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				D6A2BC06202CBBAD00C5E791 /* AppDelegate.swift */,
 				D6A2BC08202CBBAD00C5E791 /* ViewController.swift */,
+				D6A2BC18202CD5A300C5E791 /* SubjectTableViewCell.swift */,
 				D6A2BC0A202CBBAD00C5E791 /* Main.storyboard */,
 				D6A2BC0D202CBBAD00C5E791 /* Assets.xcassets */,
 				D6A2BC0F202CBBAD00C5E791 /* LaunchScreen.storyboard */,
@@ -137,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6A2BC09202CBBAD00C5E791 /* ViewController.swift in Sources */,
+				D6A2BC19202CD5A300C5E791 /* SubjectTableViewCell.swift in Sources */,
 				D6A2BC07202CBBAD00C5E791 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
