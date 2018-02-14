@@ -12,6 +12,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let subjects : [String] = ["Math", "Science", "Marvel"]
     let descriptions : [String] = ["Do you have a knack for numbers?", "Test your mad science skills", "Do you know your marvel heros?"]
     let images : [UIImage] = [UIImage(named: "Math")!, UIImage(named: "Science")!, UIImage(named: "Marvel")!]
+    var category : String = ""
     
     @IBOutlet weak var subjectsTable: UITableView!
     
@@ -42,6 +43,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // let index = indexPath.row
+        let cell = tableView.cellForRow(at: indexPath) as! SubjectTableViewCell
+        category = cell.subjectTitle.text!
         performSegue(withIdentifier: "QuestionsVC", sender: self)
     }
     
@@ -55,6 +58,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? QuestionsViewController {
+            destination.category = category
+        }
     }
 }
 
