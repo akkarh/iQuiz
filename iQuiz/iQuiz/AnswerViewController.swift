@@ -9,9 +9,13 @@
 import UIKit
 
 class AnswerViewController: UIViewController {
+    var category : String = ""
     var correct : Bool = false
     var answer : String = ""
     var question : String = ""
+    var done : Bool = false
+    var questionNo : Int = -1
+    var numQs : Int = -1
 
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerLabel: UILabel!
@@ -19,14 +23,23 @@ class AnswerViewController: UIViewController {
     @IBOutlet weak var nextButton: UIButton!
     
     @IBAction func nextPressed(_ sender: UIButton) {
-        print("clicked")
-        // performSegue(withIdentifier: "nextQ", sender: self)
+        if done {
+            performSegue(withIdentifier: "doneVC", sender: self)
+        } else {
+            performSegue(withIdentifier: "nextQ", sender: self)
+        }
     }
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let destination = segue.destination as? QuestionsViewController {
-            destination.questionNo = destination.questionNo + 1
+        if done {
+            if let destination = segue.destination as? FinishViewController {
+                destination.category = category
+            }
+        } else {
+            if let destination = segue.destination as? QuestionsViewController {
+                destination.questionNo = destination.questionNo + 1
+                destination.category = category
+            }
         }
     }
     override func viewDidLoad() {
@@ -36,6 +49,8 @@ class AnswerViewController: UIViewController {
         nextButton.isEnabled = true
         questionLabel.text = question
         answerLabel.text = answer
+        questionNo = questionNo + 1
+        done = questionNo >= numQs
         if correct {
             feedbackLabel.text = "🎉 Correct Answer! 🎉"
         } else {

@@ -42,7 +42,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // let index = indexPath.row
         let cell = tableView.cellForRow(at: indexPath) as! SubjectTableViewCell
         category = cell.subjectTitle.text!
         performSegue(withIdentifier: "QuestionsVC", sender: self)
@@ -52,6 +51,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         subjectsTable.delegate = self
         subjectsTable.dataSource = self
+        navigationItem.hidesBackButton = true
         // Do any additional setup after loading the view, typically from a nib.
     }
 

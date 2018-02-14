@@ -36,7 +36,11 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad()
         answersTable.delegate = self
         answersTable.dataSource = self
+        
         questions = questionsRepo.getQuestions(category: category)
+        if (questionNo > questions.count) {
+            
+        }
         questionLabel.text = questions[questionNo].question
         
         // TODO: Finish or delete later
@@ -56,6 +60,9 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
             destination.correct = answer == correctAnswer
             destination.answer = questions[questionNo].answers[correctAnswer]
             destination.question = questions[questionNo].question
+            destination.category = category
+            destination.questionNo = questionNo
+            destination.numQs = questions.count
         }
     }
     
