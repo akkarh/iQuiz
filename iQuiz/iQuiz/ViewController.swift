@@ -14,13 +14,44 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let images : [UIImage] = [UIImage(named: "Math")!, UIImage(named: "Science")!, UIImage(named: "Marvel")!]
     var category : String = ""
     
+    var jsonData : [[String : Any]] = [[:]]
+    let url = URL(string: "http://tednewardsandbox.site44.com/questions.json")
+    
     @IBOutlet weak var subjectsTable: UITableView!
     
     @IBAction func settings(_ sender: Any) {
-        let alert = UIAlertController(title: "Settings", message: "Settings go here", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: {_ in NSLog("This alert occured.")
-        }))
+        let alert = UIAlertController(title: "Settings", message: "click on check now to download quiz questions", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("check now", comment: "Default action"), style: .`default`, handler: getResults))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: "Default action"), style: .`default`, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func getResults(action: UIAlertAction) {
+        if Reachability.isConnectedToNetwork(){
+            request(url: self.url!)
+        } else{
+            let alert = UIAlertController(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Default action"), style: .`default`, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func request(url: URL) {
+        URLSession.shared.dataTask(with: url, completionHandler: {
+            (data, response, error) in
+            guard error == nil else { return }
+            // make sure we got data in the response
+            guard let responseData = data else { return }
+            do {
+                let json = try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! [[String : Any]]
+                self.jsonData = json
+                print(json)
+            } catch let error as NSError {
+                let alert = UIAlertController(title: "Download Failed", message: "Unable to download questions.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Default action"), style: .`default`, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }).resume()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
