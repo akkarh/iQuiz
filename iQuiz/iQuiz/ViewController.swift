@@ -6,6 +6,13 @@
 //  Copyright © 2018 Harshitha Akkaraju. All rights reserved.
 //
 
+/*
+ TODO
+ * Store json to local storage
+ * Use local storage when device is offline
+ * Move settings to application settings
+ */
+
 import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -27,15 +34,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func getResults(action: UIAlertAction) {
-        if Reachability.isConnectedToNetwork(){
+        // check if network is available
+        if Reachability.isConnectedToNetwork() {
             request(url: self.url!)
-        } else{
+        } else {
             let alert = UIAlertController(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Default action"), style: .`default`, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
     }
     
+    // download JSON from site
     func request(url: URL) {
         URLSession.shared.dataTask(with: url, completionHandler: {
             (data, response, error) in
