@@ -13,6 +13,7 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     var questionNo : Int = 0
     var answer : Int = -1
+    var score : Int = 0
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // no of answer choices
@@ -27,9 +28,9 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBAction func submitClicked(_ sender: UIButton) {
         if (answer != -1) {
-            let questions = category["questions"] as! [Question]
-            var question = questions[questionNo]
-            question.input = self.answer
+            let questions = category["questions"] as? [Any]
+            var question = questions![questionNo] as? [String : Any]
+            question!["input"] = self.answer
             performSegue(withIdentifier: "AnswerVC", sender: self)
         }
     }
@@ -38,14 +39,12 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad()
         answersTable.delegate = self
         answersTable.dataSource = self
-        print(category)
         let questions = category["questions"] as! [Any]
-        print(questions)
         if (questionNo > questions.count) {
             performSegue(withIdentifier: "AnswerVC", sender: self)
         }
-        let question = questions[questionNo]
-        // questionLabel.text = question.text
+        let question = questions[questionNo] as? [String : Any]
+        questionLabel.text = question?["text"] as? String
     }
     
     override func didReceiveMemoryWarning() {
@@ -55,12 +54,19 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? AnswerViewController {
-            let questions = category["questions"] as! [Question]
-            let correctAnswer = questions[questionNo].answer
+            let questions = category["questions"] as! [Any]
+            var question = questions[questionNo] as! [String : Any]
+            let answers = question["answers"] as! [String]
+            let answerIndex = question["answer"] as! String
+            let correctAnswer = answers[Int(answerIndex)! - 1]
             
-            destination.correct = answer == correctAnswer
-            destination.answer = questions[questionNo].answers[correctAnswer]
-            destination.question = questions[questionNo].text
+            destination.correct = answer == (Int(answerIndex)! - 1)
+            if answer == (Int(answerIndex)! - 1) {
+                self.score = self.score + 1
+            }
+            destination.score = self.score
+            destination.answer = correctAnswer
+            destination.question = question["text"] as! String
             destination.category = category
             destination.questionNo = questionNo
             destination.numQs = questions.count

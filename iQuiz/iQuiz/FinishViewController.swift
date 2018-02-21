@@ -10,7 +10,7 @@ import UIKit
 
 class FinishViewController: UIViewController {
     var category : [String : Any] = [ : ]
-    var questions : [Question] = []
+    var quizScore : Int = 0
     
     @IBOutlet weak var score: UILabel!
     @IBOutlet weak var message: UILabel!
@@ -19,22 +19,11 @@ class FinishViewController: UIViewController {
         performSegue(withIdentifier: "backToList", sender: self)
     }
     
-    func computeScore() -> Int {
-        var numCorrect = 0
-        for q in questions {
-            if q.answer == q.input {
-                numCorrect = numCorrect + 1
-            }
-        }
-        score.text = String(numCorrect) + " / " + String(questions.count)
-        return numCorrect
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.hidesBackButton = true
-        questions = category["questions"] as! [Question]
-        _ = computeScore() // TODO: Customize the message based on the user score
+        let questions = category["questions"] as! [Any]
+        score.text = String(self.quizScore) + " / " + String(questions.count)
         message.text = "Nice Job!"
     }
 

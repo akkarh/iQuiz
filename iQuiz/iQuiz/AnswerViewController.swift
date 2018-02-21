@@ -9,6 +9,7 @@
 import UIKit
 
 class AnswerViewController: UIViewController {
+    
     var category : [String : Any] = [ : ]
     var correct : Bool = false
     var answer : String = ""
@@ -16,6 +17,7 @@ class AnswerViewController: UIViewController {
     var done : Bool = false
     var questionNo : Int = -1
     var numQs : Int = -1
+    var score : Int = 0
 
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answerLabel: UILabel!
@@ -34,11 +36,13 @@ class AnswerViewController: UIViewController {
         if done {
             if let destination = segue.destination as? FinishViewController {
                 destination.category = self.category
+                destination.quizScore = self.score
             }
         } else {
             if let destination = segue.destination as? QuestionsViewController {
-                destination.questionNo = destination.questionNo + 1
+                destination.questionNo = self.questionNo
                 destination.category = self.category
+                destination.score = self.score
             }
         }
     }
