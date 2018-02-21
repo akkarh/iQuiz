@@ -7,37 +7,34 @@
 //
 
 import Foundation
+import UIKit
 
+// class for Question
 class Question {
-    var question : String
+    var text : String
+    var answer : Int
     var answers : [String]
-    var answer: Int
-    var input: Int
+    var input : Int
     
-    init(question : String, answers: [String], answer: Int, userInput: Int) {
-        self.question = question
-        self.answers = answers
+    // initialize fields
+    init(text: String, answer: Int, answers: [String]) {
+        self.text = text
         self.answer = answer
-        self.input = userInput
+        self.answers = answers
+        self.input = -1
     }
 }
 
-class QuestionRepo {
+// class for Category
+class Category {
+    var title : String
+    var desc : String
+    var questions : [Question]
     
-    static let shared = QuestionRepo()
-
-    private var questions : [String: [Question]] = ["Math": [Question(question: "2 + 2", answers: ["4", "7", "6", "5"], answer: 0, userInput: -1),
-                                                             Question(question: "96 - 52", answers: ["43", "44", "56", "54"], answer: 2, userInput: -1)],
-                                                    "Science": [Question(question: "What is NaCl", answers: ["Baking soda", "Salt", "Sugar", "Chlorine"], answer: 2, userInput: -1), Question(question: "Light is a ", answers: ["wave", "particle", "both", "neither"], answer: 3, userInput: -1)],
-                                                    "Marvel": [Question(question: "What is Peter Parker's middle name?", answers: ["Benjamin", "Mark", "Joseph", "William"], answer: 1, userInput: -1), Question(question: "Where was Galactus born?", answers: ["Oa", "Taa", "Mee", "Blue"], answer: 2, userInput: -1)]]
-    
-    func getQuestions(category: String) -> [Question] {
-        return questions[category]!
-    }
-    
-    func updateQuestion(category: String, questionNo: Int, userInput: Int) {
-        if (userInput != -1) {
-            questions[category]![questionNo].input = userInput
-        }
+    // initialize fields
+    init(title : String, description : String, questions : [Question]) {
+        self.title = title
+        self.desc = description
+        self.questions = questions
     }
 }

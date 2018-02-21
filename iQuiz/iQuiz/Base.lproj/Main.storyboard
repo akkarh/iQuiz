@@ -319,6 +319,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="nSp-kv-D9v"/>
         <segue reference="QtP-H1-QpX"/>
         <segue reference="bYX-4h-VYh"/>
     </inferredMetricsTieBreakers>

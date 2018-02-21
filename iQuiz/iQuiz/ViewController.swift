@@ -16,32 +16,49 @@
 import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    let subjects : [String] = ["Math", "Science", "Marvel"]
-    let descriptions : [String] = ["Do you have a knack for numbers?", "Test your mad science skills", "Do you know your marvel heros?"]
-    let images : [UIImage] = [UIImage(named: "Math")!, UIImage(named: "Science")!, UIImage(named: "Marvel")!]
-    var category : String = ""
     
-    var jsonData : [[String : Any]] = [[:]]
+    var json : [[String : Any]] = [[ : ]]
     let url = URL(string: "http://tednewardsandbox.site44.com/questions.json")
+    var row : Int = -1
     
     @IBOutlet weak var subjectsTable: UITableView!
     
+    // move settings to application settings
     @IBAction func settings(_ sender: Any) {
         let alert = UIAlertController(title: "Settings", message: "click on check now to download quiz questions", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("check now", comment: "Default action"), style: .`default`, handler: getResults))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("check now", comment: "Default action"), style: .`default`, handler: nil))
         alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: "Default action"), style: .`default`, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
-    func getResults(action: UIAlertAction) {
-        // check if network is available
-        if Reachability.isConnectedToNetwork() {
-            request(url: self.url!)
-        } else {
-            let alert = UIAlertController(title: "No Internet Connection", message: "Make sure your device is connected to the internet.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Default action"), style: .`default`, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
+    // find the user's documents directory
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // make the api request
+        request(url: self.url!)
+        
+        subjectsTable.delegate = self
+        subjectsTable.dataSource = self
+        navigationItem.hidesBackButton = true
+        self.subjectsTable.reloadData()
+        
+        // obtain file path to write to directory
+        let documentDir = getDocumentsDirectory()
+        let filePath = documentDir.appendingPathComponent("data.txt")
+        let fileString = filePath.absoluteString
+        
+        (json as NSArray).write(toFile: fileString, atomically: true)
+        self.subjectsTable.reloadData()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     // download JSON from site
@@ -50,15 +67,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             (data, response, error) in
             guard error == nil else { return }
             // make sure we got data in the response
-            guard let responseData = data else { return }
+            guard data != nil else { return }
             do {
-                let json = try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! [[String : Any]]
-                self.jsonData = json
-                print(json)
+                // specify an array as a decoding result
+                let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [[String : Any]]
+                self.json = jsonResponse
+                DispatchQueue.main.async {
+                    self.subjectsTable.reloadData()
+                }
             } catch let error as NSError {
-                let alert = UIAlertController(title: "Download Failed", message: "Unable to download questions.", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Default action"), style: .`default`, handler: nil))
-                self.present(alert, animated: true, completion: nil)
+                print(error)
             }
         }).resume()
     }
@@ -68,40 +86,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return subjects.count
+        return self.json.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: customize here
         let index = indexPath.row
+        let category = self.json[index] as [String : Any]
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SubjectTableViewCell
-        cell.subjectTitle.text = subjects[index]
-        cell.subjectDescription.text = descriptions[index]
-        cell.imageView?.image = images[index]
+        cell.subjectTitle.text = category["title"] as? String
+        cell.subjectDescription.text = category["desc"] as? String
+        // cell.imageView?.image = images[index]
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! SubjectTableViewCell
-        category = cell.subjectTitle.text!
+        self.row = indexPath.row
         performSegue(withIdentifier: "QuestionsVC", sender: self)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        subjectsTable.delegate = self
-        subjectsTable.dataSource = self
-        navigationItem.hidesBackButton = true
-        // Do any additional setup after loading the view, typically from a nib.
-    }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? QuestionsViewController {
+            let category = self.json[row] as [String : Any]
             destination.category = category
         }
     }

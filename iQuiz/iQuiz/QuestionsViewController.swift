@@ -9,17 +9,17 @@
 import UIKit
 
 class QuestionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    // TODO: initialize it upon segue
+    var category : [String : Any] = [ : ]
+    
     var questionNo : Int = 0
-    var category : String = ""
-    var questions : [Question] = []
     var answer : Int = -1
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4 // no of choices
+        // no of answer choices
+        return 4
     }
     
-    let questionsRepo = QuestionRepo.shared
+    // let questionsRepo = QuestionRepo.shared
     
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answersTable: UITableView!
@@ -27,7 +27,9 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBAction func submitClicked(_ sender: UIButton) {
         if (answer != -1) {
-            questionsRepo.updateQuestion(category: category, questionNo: questionNo, userInput: answer)
+            let questions = category["questions"] as! [Question]
+            var question = questions[questionNo]
+            question.input = self.answer
             performSegue(withIdentifier: "AnswerVC", sender: self)
         }
     }
@@ -36,17 +38,14 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad()
         answersTable.delegate = self
         answersTable.dataSource = self
-        
-        questions = questionsRepo.getQuestions(category: category)
+        print(category)
+        let questions = category["questions"] as! [Any]
+        print(questions)
         if (questionNo > questions.count) {
-            
+            performSegue(withIdentifier: "AnswerVC", sender: self)
         }
-        questionLabel.text = questions[questionNo].question
-        
-        // TODO: Finish or delete later
-//        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector(swipeAction(swipe:)))
-//        leftSwipe.direction = UISwipeGestureRecognizerDirection.left
-//        self.view.addGestureRecognizer(leftSwipe)
+        let question = questions[questionNo]
+        // questionLabel.text = question.text
     }
     
     override func didReceiveMemoryWarning() {
@@ -56,10 +55,12 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? AnswerViewController {
+            let questions = category["questions"] as! [Question]
             let correctAnswer = questions[questionNo].answer
+            
             destination.correct = answer == correctAnswer
             destination.answer = questions[questionNo].answers[correctAnswer]
-            destination.question = questions[questionNo].question
+            destination.question = questions[questionNo].text
             destination.category = category
             destination.questionNo = questionNo
             destination.numQs = questions.count
@@ -67,28 +68,19 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // TODO: customize here
         let index = indexPath.row
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = questions[questionNo].answers[index]
+        let questions = category["questions"] as? [Any]
+        let question = questions![questionNo] as! [String : Any]
+        let answers = question["answers"] as? [String]
+        cell.textLabel?.text = answers?[index]
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let index = indexPath.row
-        self.answer = index
+        self.answer = indexPath.row
         submitButton.isEnabled = true
     }
 
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }
 
