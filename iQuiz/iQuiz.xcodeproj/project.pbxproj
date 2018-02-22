@@ -19,6 +19,8 @@
 		D6A2BC11202CBBAD00C5E791 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6A2BC0F202CBBAD00C5E791 /* LaunchScreen.storyboard */; };
 		D6A2BC19202CD5A300C5E791 /* SubjectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A2BC18202CD5A300C5E791 /* SubjectTableViewCell.swift */; };
 		D6AD5412203C1EA400C0E5C1 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AD5411203C1EA400C0E5C1 /* NetworkReachability.swift */; };
+		D6AD5414203E591E00C0E5C1 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D6AD5413203E591E00C0E5C1 /* Settings.bundle */; };
+		D6AD5416203E5C4300C0E5C1 /* PopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AD5415203E5C4300C0E5C1 /* PopOverViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		D6A2BC12202CBBAD00C5E791 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D6A2BC18202CD5A300C5E791 /* SubjectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubjectTableViewCell.swift; sourceTree = "<group>"; };
 		D6AD5411203C1EA400C0E5C1 /* NetworkReachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
+		D6AD5413203E591E00C0E5C1 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		D6AD5415203E5C4300C0E5C1 /* PopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopOverViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,8 @@
 				D6167BAB203261E300A35FFD /* Subject.swift */,
 				D607DCBE2033659D00EB7674 /* QuestionRepository.swift */,
 				D6AD5411203C1EA400C0E5C1 /* NetworkReachability.swift */,
+				D6AD5415203E5C4300C0E5C1 /* PopOverViewController.swift */,
+				D6AD5413203E591E00C0E5C1 /* Settings.bundle */,
 			);
 			path = iQuiz;
 			sourceTree = "<group>";
@@ -144,6 +150,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6AD5414203E591E00C0E5C1 /* Settings.bundle in Resources */,
 				D6A2BC11202CBBAD00C5E791 /* LaunchScreen.storyboard in Resources */,
 				D6A2BC0E202CBBAD00C5E791 /* Assets.xcassets in Resources */,
 				D6A2BC0C202CBBAD00C5E791 /* Main.storyboard in Resources */,
@@ -159,6 +166,7 @@
 			files = (
 				D6167BAC203261E300A35FFD /* Subject.swift in Sources */,
 				D607DCC1203408BE00EB7674 /* AnswerViewController.swift in Sources */,
+				D6AD5416203E5C4300C0E5C1 /* PopOverViewController.swift in Sources */,
 				D607DCBF2033659D00EB7674 /* QuestionRepository.swift in Sources */,
 				D607DCBD2032B29100EB7674 /* QuestionsViewController.swift in Sources */,
 				D6A2BC09202CBBAD00C5E791 /* ViewController.swift in Sources */,

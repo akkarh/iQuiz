@@ -32,7 +32,9 @@
                                 <items>
                                     <barButtonItem title="Settings" id="VDp-kL-UAZ">
                                         <connections>
-                                            <action selector="settings:" destination="BYZ-38-t0r" id="UIG-0F-mOe"/>
+                                            <segue destination="foK-Ko-wgk" kind="popoverPresentation" popoverAnchorBarButtonItem="VDp-kL-UAZ" id="lHa-KR-WUV">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -112,6 +114,78 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="807" y="-31"/>
+        </scene>
+        <!--Pop Over View Controller-->
+        <scene sceneID="4bw-R0-NhR">
+            <objects>
+                <viewController id="foK-Ko-wgk" customClass="PopOverViewController" customModule="iQuiz" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zct-c8-Dqa">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eWr-jk-TBB">
+                                <rect key="frame" x="16" y="66" width="343" height="416"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4OJ-Nq-j0D">
+                                        <rect key="frame" x="8" y="16" width="327" height="355"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <textField key="tableFooterView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="3Sp-wj-QmG">
+                                            <rect key="frame" x="0.0" y="72" width="327" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <nil key="textColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="a6g-z1-Tgv">
+                                                <rect key="frame" x="0.0" y="28" width="327" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="a6g-z1-Tgv" id="ieq-zp-G7U">
+                                                    <rect key="frame" x="0.0" y="0.0" width="327" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                </tableViewCellContentView>
+                                            </tableViewCell>
+                                        </prototypes>
+                                    </tableView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wP0-mU-TMQ">
+                                        <rect key="frame" x="8" y="378" width="327" height="30"/>
+                                        <fontDescription key="fontDescription" name="Helvetica-Light" family="Helvetica" pointSize="18"/>
+                                        <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="closePopup:" destination="foK-Ko-wgk" eventType="touchUpInside" id="a9c-xe-h8y"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailingMargin" secondItem="wP0-mU-TMQ" secondAttribute="trailing" id="QIW-ET-J1j"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="wP0-mU-TMQ" secondAttribute="bottom" id="Rkg-Iq-7L6"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="4OJ-Nq-j0D" secondAttribute="trailing" id="ekk-ZT-rSd"/>
+                                    <constraint firstItem="wP0-mU-TMQ" firstAttribute="leading" secondItem="eWr-jk-TBB" secondAttribute="leadingMargin" id="jad-Km-E6L"/>
+                                    <constraint firstItem="wP0-mU-TMQ" firstAttribute="top" secondItem="4OJ-Nq-j0D" secondAttribute="bottom" constant="7" id="pzR-ea-hfM"/>
+                                    <constraint firstItem="4OJ-Nq-j0D" firstAttribute="leading" secondItem="eWr-jk-TBB" secondAttribute="leadingMargin" id="shj-ga-cYN"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="4OJ-Nq-j0D" secondAttribute="bottom" constant="37" id="vgC-5i-jdS"/>
+                                    <constraint firstItem="4OJ-Nq-j0D" firstAttribute="top" secondItem="eWr-jk-TBB" secondAttribute="topMargin" constant="8" id="x7K-5X-GdW"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="eWr-jk-TBB" firstAttribute="leading" secondItem="PPK-GU-g1X" secondAttribute="leading" constant="16" id="4wQ-q0-rx0"/>
+                            <constraint firstItem="eWr-jk-TBB" firstAttribute="top" secondItem="PPK-GU-g1X" secondAttribute="top" constant="46" id="FSB-AY-Mij"/>
+                            <constraint firstItem="PPK-GU-g1X" firstAttribute="trailing" secondItem="eWr-jk-TBB" secondAttribute="trailing" constant="16" id="LBb-AA-YuI"/>
+                            <constraint firstItem="PPK-GU-g1X" firstAttribute="bottom" secondItem="eWr-jk-TBB" secondAttribute="bottom" constant="185" id="tgV-Y3-l9W"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="PPK-GU-g1X"/>
+                    </view>
+                    <connections>
+                        <outlet property="Popupview" destination="wP0-mU-TMQ" id="saH-n4-Eiv"/>
+                        <outlet property="tableView" destination="4OJ-Nq-j0D" id="zjW-me-3vx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Val-GI-n7B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="806" y="682"/>
         </scene>
         <!--Quiz-->
         <scene sceneID="udq-uA-sAT">
@@ -319,8 +393,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="nSp-kv-D9v"/>
-        <segue reference="QtP-H1-QpX"/>
+        <segue reference="jwE-dn-Wma"/>
         <segue reference="bYX-4h-VYh"/>
     </inferredMetricsTieBreakers>
 </document>

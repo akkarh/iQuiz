@@ -23,14 +23,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var subjectsTable: UITableView!
     
-    // move settings to application settings
-    @IBAction func settings(_ sender: Any) {
-        let alert = UIAlertController(title: "Settings", message: "click on check now to download quiz questions", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("check now", comment: "Default action"), style: .`default`, handler: nil))
-        alert.addAction(UIAlertAction(title: NSLocalizedString("cancel", comment: "Default action"), style: .`default`, handler: nil))
-        self.present(alert, animated: true, completion: nil)
-    }
-    
     // find the user's documents directory
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -39,21 +31,40 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // make the api request
-        request(url: self.url!)
-        
-        subjectsTable.delegate = self
-        subjectsTable.dataSource = self
-        navigationItem.hidesBackButton = true
-        self.subjectsTable.reloadData()
-        
         // obtain file path to write to directory
         let documentDir = getDocumentsDirectory()
-        let filePath = documentDir.appendingPathComponent("data.txt")
+        let filePath = documentDir.appendingPathComponent("data.json")
         let fileString = filePath.absoluteString
         
-        (json as NSArray).write(toFile: fileString, atomically: true)
-        self.subjectsTable.reloadData()
+        // If network is available
+        if Reachability.isConnectedToNetwork() {
+            // make the api request
+            request(url: self.url!)
+            subjectsTable.delegate = self
+            subjectsTable.dataSource = self
+            navigationItem.hidesBackButton = true
+            self.subjectsTable.reloadData()
+            
+            // write quiz data to file
+            (json as NSArray).write(toFile: fileString, atomically: true)
+            self.subjectsTable.reloadData()
+        } else {
+            print("here")
+            // load data from file directory
+            if let path = Bundle.main.path(forResource: "data", ofType: "json") {
+                do {
+                    let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+                    let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                    if let jsonResult = jsonResult as? [[String : Any]] {
+                        print(jsonResult)
+                        // do stuff
+                    }
+                } catch {
+                    // handle error
+                }
+            }
+
+        }
     }
 
     override func didReceiveMemoryWarning() {

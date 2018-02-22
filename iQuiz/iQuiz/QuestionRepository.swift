@@ -9,8 +9,8 @@
 import Foundation
 import UIKit
 
-// class for Question
-class Question {
+// struct for Question
+struct Question {
     var text : String
     var answer : Int
     var answers : [String]
@@ -25,8 +25,8 @@ class Question {
     }
 }
 
-// class for Category
-class Category {
+// struct for Category
+struct Category {
     var title : String
     var desc : String
     var questions : [Question]
