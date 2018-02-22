@@ -20,8 +20,6 @@ class QuestionsViewController: UIViewController, UITableViewDelegate, UITableVie
         return 4
     }
     
-    // let questionsRepo = QuestionRepo.shared
-    
     @IBOutlet weak var questionLabel: UILabel!
     @IBOutlet weak var answersTable: UITableView!
     @IBOutlet weak var submitButton: UIButton!

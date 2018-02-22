@@ -18,10 +18,11 @@ import UIKit
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var json : [[String : Any]] = [[ : ]]
-    let url = URL(string: "http://tednewardsandbox.site44.com/questions.json")
+    var url = URL(string: "http://tednewardsandbox.site44.com/questions.json")
     var row : Int = -1
     
     @IBOutlet weak var subjectsTable: UITableView!
+    let images : [UIImage] = [UIImage(named: "Science!")!, UIImage(named: "Marvel Super Heroes")!, UIImage(named: "Mathematics")!]
     
     // find the user's documents directory
     func getDocumentsDirectory() -> URL {
@@ -38,6 +39,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         // If network is available
         if Reachability.isConnectedToNetwork() {
+            // set url in app settings
+            let settings = UserDefaults.standard
+            settings.set(self.url, forKey: "name_preference")
+            settings.synchronize()
+            
             // make the api request
             request(url: self.url!)
             subjectsTable.delegate = self
@@ -49,21 +55,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             (json as NSArray).write(toFile: fileString, atomically: true)
             self.subjectsTable.reloadData()
         } else {
-            print("here")
-            // load data from file directory
-            if let path = Bundle.main.path(forResource: "data", ofType: "json") {
-                do {
-                    let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                    let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                    if let jsonResult = jsonResult as? [[String : Any]] {
-                        print(jsonResult)
-                        // do stuff
-                    }
-                } catch {
-                    // handle error
-                }
-            }
-
+            
         }
     }
 
@@ -76,12 +68,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func request(url: URL) {
         URLSession.shared.dataTask(with: url, completionHandler: {
             (data, response, error) in
-            guard error == nil else { return }
+            guard error == nil else {
+                let alert = UIAlertController(title: "Invalid URL", message: "Please enter a valid URL", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
             // make sure we got data in the response
             guard data != nil else { return }
             do {
                 // specify an array as a decoding result
-                let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: .allowFragments) as! [[String : Any]]
+                let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as! [[String : Any]]
                 self.json = jsonResponse
                 DispatchQueue.main.async {
                     self.subjectsTable.reloadData()
@@ -106,7 +103,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SubjectTableViewCell
         cell.subjectTitle.text = category["title"] as? String
         cell.subjectDescription.text = category["desc"] as? String
-        // cell.imageView?.image = images[index]
+        cell.imageView?.image = images[index]
         return cell
     }
     
